@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../App";
 
 const LoginWrapper = styled.div`
   height: 100vh;
@@ -38,20 +39,12 @@ const LoginButton = styled.button`
   cursor: pointer;
   margin-top: 10px;
 `;
-
+  
 function Login() {
-  const [username, setUsername] = useState("");
+  const {isLogin,setLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (username.trim()) {
-      // 2-vazifa: Dashboardga kirish va login holatini saqlash
-      localStorage.setItem("isAuthenticated", "true");
-      navigate("/orders"); // Dashboardning birinchi sahifasiga yo'naltirish
-    } else {
-      alert("Ism kiriting!");
-    }
-  };
+  
 
   return (
     <LoginWrapper>
@@ -60,11 +53,13 @@ function Login() {
         <p>Tizimga kirish</p>
         <Input 
           placeholder="Login" 
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
         />
         <Input type="password" placeholder="Parol" />
-        <LoginButton onClick={handleLogin}>Kirish</LoginButton>
+        <LoginButton onClick={() => {
+          setLogin(true);
+          navigate("/");
+
+        }}>Kirish</LoginButton>
       </LoginForm>
     </LoginWrapper>
   );
